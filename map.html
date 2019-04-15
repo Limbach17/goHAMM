@@ -20,6 +20,13 @@
               height: 100%;
             }
 
+            #media {
+                z-index: 1;
+                margin: 20px 20px 20px 20px;
+                position: fixed;
+                float: right;
+            }
+
             html, body {
                 height: 100%;
                 margin: 0;
@@ -29,20 +36,40 @@
     </style>
 </head>
 <body>
+    <div class="card" id="media" style="width: 18rem;">
+            <div class="card-body">
+              <h5 class="card-title">Toggle Music</h5>
+              <hr>
+              <button class="play" id="btn1">PLAY</button>
+            </div>
+    </div>
+
     <div id="pokemap"></div>
-
-    <audio id="bicylce-theme">
-            <source src="assets/audio/130-cycling.mp3" type="audio/mp3">
-    </audio>
     
-    <script>
-        
 
+    <script>
+
+        $('audio#bicycle-theme')[0].play();
+
+        
+        $('.play').click(function(){
+        var $this = $(this);
+        var id = $this.attr('id').replace(/btn/, '');
+        $this.toggleClass('active');
+        if($this.hasClass('active')){
+            $this.text('PAUSE'); 
+            $('audio#bicycle-theme')[0].play();        
+        } else {
+            $this.text('PLAY');
+            $('audio#bicycle-theme')[0].pause();
+        }
+        });
+        
         var map;
 
         function initMap() {
             map = new google.maps.Map(document.getElementById('pokemap'), {
-            zoom: 10,
+            zoom: 12,
             center: new google.maps.LatLng(39.952768, -75.163027),
             mapTypeId: 'roadmap'
             });
@@ -60,6 +87,8 @@
                 }
         }
 
+        
+
         $.ajax(source).then(function (response) {
             console.log(response);
 
@@ -74,16 +103,16 @@
                 coords.push(coordLong);
                 coords.push(coordLat);
 
-                /* var pokeball = { 
-                    url: "assets/images/Pokeball.svg"
-                    size: new google.maps.Size(5,5),
-                    } */
-
+                var pokeball = { 
+                    url: "https://www.google.com/search?q=pokeball+png&rlz=1C1CHBF_enUS841US841&source=lnms&tbm=isch&sa=X&ved=0ahUKEwjZ157ms9LhAhVjzlkKHUnDAUMQ_AUIDigB&biw=1707&bih=818#imgrc=PhqW8Y9bsTKXgM:",
+                    size: new google.maps.Size(5,5)
+                    } 
+               
                 var latLng = new google.maps.LatLng(coords[1],coords[0]);
                 var marker = new google.maps.Marker({
                         position: latLng,
                         map: map,
-                        //icon: pokeball//
+                        // icon: pokeball//
                         });
 
                
@@ -94,13 +123,13 @@
 
                                 '</div>';
                     
-                var infoWindow = new google.maps.InfoWindo({
+                var infoWindow = new google.maps.InfoWindow({
                     content: pokeStats
-                });
+                }); 
                 
                 marker.addListener("click", function () {
-                    infowindow.open(map, marker);
-                }) */ 
+                    infoWindow.open(map, marker);
+                })  */
             }   
         });
 
@@ -111,9 +140,10 @@
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA-WMeYwTn_iN3ao3YVhoLGE8dSD5-26j0&callback=initMap">
     </script>
 
-    <!-- <script>
-        $("audio#bicycle-theme")[0].play();
-    </script> -->
+<audio id="bicylce-theme">
+        <source src="assets/audio/130-cycling.mp3" type="audio/mpeg">
+</audio>
+
 
 </body>
 </html>
